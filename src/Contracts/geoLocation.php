@@ -4,7 +4,9 @@ namespace Awescode\geoLocation\Contracts;
 
 interface geoLocation
 {
-    public function lowerStr(): string;
 
-    public function count(): int;
+    public function getLocation();
+
+    public function get();
+
 }

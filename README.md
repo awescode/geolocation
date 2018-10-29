@@ -83,7 +83,7 @@ If you discover any security related issues, please email y.lisovenko@awescode.d
 
 ## License
 
-:license. Please see the [license file](license.md) for more information.
+GPL-3.0-or-later. Please see the [license file](license.md) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/awescode/geolocation.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/awescode/geolocation.svg?style=flat-square

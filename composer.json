@@ -2,7 +2,7 @@
     "name": "awescode/geolocation",
     "description": ":description",
     "type": "library",
-    "license": ":license",
+    "license": "GPL-3.0-or-later",
 	"authors": [
 		{
 			"name": "Awescode GmbH",
@@ -22,7 +22,8 @@
 	"homepage": "https://github.com/awescode/geolocation",
 	"keywords": ["Laravel", "geoLocation"],
     "require": {
-        "illuminate/support": "~5"
+        "illuminate/support": "~5",
+        "geoip2/geoip2": "~2.0"
     },
     "require-dev": {
 		"phpunit/phpunit": "~7.0",
