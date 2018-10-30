@@ -40,7 +40,7 @@ class geoLocation implements geoLocationContract
             return json_decode($record);
         }
 
-        $reader = new Reader(base_path() . '/GeoIP2-City.mmdb');
+        $reader = new Reader(base_path() . '/storage/files/GeoIP2-City.mmdb');
         $record = $reader->city($ip);
 
         if (!isset($record->postal)) {
