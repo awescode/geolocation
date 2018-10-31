@@ -21,12 +21,18 @@ class geoLocation implements geoLocationContract
         $this->model = new $modelClassName;
     }
 
-    public function getLocation($land = 'de')
+    public function getLocation($ip = null, $land = null)
     {
-        $ip = getIp::get();
+        if ($ip == null) {
+            $ip = getIp::get();
+        }
 
         if ($ip == "UNKNOWN") {
             return (object)['isgermany' => 0];
+        }
+
+        if ($land == null) {
+            $land = config('geolocation.language');
         }
 
         if (!in_array($land, ['de', 'en'])) {
@@ -40,32 +46,37 @@ class geoLocation implements geoLocationContract
             return json_decode($record);
         }
 
-        $reader = new Reader(base_path() . '/storage/files/GeoIP2-City.mmdb');
+        $reader = new Reader(base_path() . '/files/geoip/GeoIP2-City.mmdb');
         $record = $reader->city($ip);
 
         if (!isset($record->postal)) {
             throw new Exception("For IP: " . $ip . " can't find any records.");
         }
 
+        $city = (isset($record->city->names[$land])) ? $record->city->names[$land] : $record->city->names['en'];
+        $region = (isset($record->mostSpecificSubdivision->names[$land])) ? $record->mostSpecificSubdivision->names[$land] : $record->mostSpecificSubdivision->names['en'];
+        $country = (isset($record->country->names[$land])) ? $record->country->names[$land] : $record->country->names['en'];
+
         $this->record = (object)[
             'postcode' => $record->postal->code,
-            'city' => $record->city->names[$land],
-            'region' => $record->mostSpecificSubdivision->names[$land],
-            'country' => $record->country->names[$land],
+            'city' => $city,
+            'region' => $region,
+            'country' => $country,
             'country_iso' => $record->country->isoCode,
             'lat' => $record->location->latitude,
             'lng' => $record->location->longitude,
-            'isgermany' => ($record->country->isoCode == "DE") ? 1 : 0
+            'isgermany' => ($record->country->isoCode == "DE") ? 1 : 0,
+            'ip' => $ip
         ];
 
         Cache::put($key, json_encode($this->record), 365 * 24 * 60 * 60);
         return $this->record;
     }
 
-    public function get()
+    public function get($ip = null, $lang = null)
     {
         if ($this->record == null) {
-            return $this->getLocation();
+            return $this->getLocation($ip, $lang);
         }
         return $this->record;
     }
