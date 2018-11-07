@@ -54,12 +54,12 @@ class GetIP
      */
     private static function _check_ip()
     {
-        if (self::_get('HTTP_X_FORWARDED_FOR')) {
+        if (self::_get('REMOTE_ADDR')) {
+            return self::_get('REMOTE_ADDR');
+        } else if (self::_get('HTTP_X_FORWARDED_FOR')) {
             return self::_get('HTTP_X_FORWARDED_FOR');
         } else if (self::_get('HTTP_CLIENT_IP')) {
             return self::_get('HTTP_CLIENT_IP');
-        } else if (self::_get('REMOTE_ADDR')) {
-            return self::_get('REMOTE_ADDR');
         } else if (self::_get('HTTP_X_FORWARDED')) {
             return self::_get('HTTP_X_FORWARDED');
         } else if (self::_get('HTTP_FORWARDED_FOR')) {
